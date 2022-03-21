@@ -16,7 +16,7 @@ Benchmark used to accomplish this task is the TPC-DS standard linked [here](http
 
 The commited report file contains:
 - generic information about Greenplum database (pros and cons)
-- link to source code
-- link to final results
+- link to [source code](https://docs.google.com/document/d/1HoePsA3QQi8bwelvjqMu88w0YKiHD8EwspXp10J1Rls/edit)
+- link to final [results](https://docs.google.com/document/d/1leDGlIEYOeVTWbKZoUeB-EuLQC_FzSqHvJS26zKc-5Q/edit)
 - conclusions about the efficiency of Greenplum parallel processing 
 
