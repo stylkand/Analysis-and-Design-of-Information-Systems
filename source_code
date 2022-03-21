@@ -1,0 +1,71 @@
+1) Set VMs on Okeanos and network 
+
+Set hostnames per host:
+$ sudo hostname mdw   #master
+$ sudo hostname sdw1  #host1
+$ sudo hostname sdw2  #host2
+
+$ sudo vim /etc/hosts  #on every host
+
+hosts file contains:
+
+192.168.0.1 mdw
+192.168.0.2 sdw1
+192.168.0.3 sdw2
+
+
+2) Setting the Greenplum Recommended OS Parameters on every host 
+
+Set the following parameters in the /etc/sysctl.conf file and reboot:
+
+kernel.shmall = 3800842
+kernel.shmmax = 15568248832
+kernel.shmmni = 4096
+vm.overcommit_memory = 2
+vm.overcommit_ratio = 95
+
+net.ipv4.ip_local_port_range = 32768 60999
+
+kernel.sem = 250 2048000 200 8192
+kernel.sysrq = 1
+kernel.core_uses_pid = 1
+kernel.msgmnb = 65536
+kernel.msgmax = 65536
+kernel.msgmni = 2048
+
+net.ipv4.tcp_syncookies = 1
+net.ipv4.conf.default.accept_source_route = 0
+net.ipv4.tcp_max_syn_backlog = 4096
+net.ipv4.conf.all.arp_filter = 1
+net.core.netdev_max_backlog = 10000
+net.core.rmem_max = 2097152
+net.core.wmem_max = 2097152
+
+vm.swappiness = 10
+vm.zone_reclaim_mode = 0
+vm.dirty_expire_centisecs = 500
+vm.dirty_writeback_centisecs = 100
+vm.dirty_background_ratio = 0
+vm.dirty_ratio = 0
+vm.dirty_background_bytes = 1610612736
+vm.dirty_bytes = 4294967296
+vm.oom-kill = 0
+vm.min_free_kbytes = 251658
+
+
+Set the following parameters in the /etc/security/limits.conf file:
+
+* soft nofile 65536
+* hard nofile 65536
+* soft nproc 131072
+* hard nproc 131072
+
+Set the following authentication parameters:
+
+$ sudo nano /etc/ssh/sshd_config
+
+PermitRootLogin yes
+PasswordAuthentication yes
+
+
+
