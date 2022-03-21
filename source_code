@@ -67,5 +67,117 @@ $ sudo nano /etc/ssh/sshd_config
 PermitRootLogin yes
 PasswordAuthentication yes
 
+3) Installing the Greenplum binaries on the master host 
 
+Add the Greenplum PPA repository to our Ubuntu System:
+
+$ sudo apt update
+$ sudo apt install software-properties-common
+$ sudo add-apt-repository ppa:greenplum/db  
+
+[repo](https://launchpad.net/~greenplum/+archive/ubuntu/db?field.series_filter=xenial)
+
+Update your Ubuntu system to retrieve information from the recently added repository:
+
+$ sudo apt update
+
+Install the latest Greenplum Database release:
+
+$ sudo apt install greenplum-db-5        (Ubuntu Xenial needs gpdb 5)
+
+
+Create gpadmin user:
+
+$ groupadd gpadmin
+$ useradd gpadmin -r -m -g gpadmin
+$ passwd gpadmin
+
+Establish ssh connection between hosts:
+$ su gpadmin
+$ ssh-keygen -t rsa -b 4096
+
+Source the path file from our master host’s Greenplum Database installation directory:
+$ source /opt/gpdb/greenplum_path.sh
+
+Create a file called hostfile_exkeys that has the machine configured host names and host addresses (interface names) for each host in your Greenplum system (master, segments). 
+
+mdw
+sdw1
+sdw2
+
+Run gpssh command to enable passordless ssh for gpadmin user:	
+$ gpssh-exkeys -f hostfile_exkeys
+
+
+4) Installing and Configuring Greenplum on all Hosts
+
+Log in to the master host as root:
+$ sudo -i
+
+Run the gpseginstall utility referencing the hostfile_exkeys file we just created. 
+
+$ gpseginstall -f hostfile_exkeys
+
+
+5) Confirming Our Installation 
+
+Log in as gpadmin:
+$ su - gpadmin
+
+$ source /opt/gpdb/greenplum_path.sh
+
+check if we can login to all hosts without a password prompt:
+$ gpssh -f hostfile_exkeys -e ls -l $GPHOME
+
+6) Create data storages 
+
+Create directory:
+$ mkdir -p /data/master
+$ chown gpadmin /data/master
+
+$ source /opt/gpdb/greenplum_path.sh 
+
+Copy directory to hosts:
+$ gpssh -h sdw1 -e 'mkdir -p /data/master'
+$ gpssh -h sdw2 -e 'chown gpadmin /data/master'
+
+
+7) Clone TPC-DS repository    [repo](https://github.com/greenbeam2002/TPC-DS-1)
+
+download tarball file:
+
+$ ssh root@mdw
+$ mkdir -p /dsbenchmark
+$ cd /dsbenchmark
+$ curl -LO https://github.com/pivotal/TPC-DS/archive/refs/tags/v3.0.0.tar.gz
+$ tar xzf v3.0.0.tar.gz
+$ mv TPC-DS-3.0.0 TPC-DS
+
+
+8) Fix all dependencies and add special bash code in order to fit our requirements 
+
+
+Change 2 parameters of the tpcds_variables.sh file:
+
+GEN_DATA_SCALE=  
+-1 -> 1GB
+-10 -> 10GB 
+
+
+RANDOM_DISTRIBUTION=
+-"true" -> random 
+-"false" -> hash
+
+ 9) Run TPC-DS and save results 
+
+$ cd /dsbenchmark/TPC-DS
+$ ./tpcds.sh
+
+
+Libraries added to Ubuntu systems:
+
+$ sudo apt install zlib
+$ sudo apt-get install python3
+$ sudo apt-get install libapr1
+$ sudo apt-get install zlib1g
 
