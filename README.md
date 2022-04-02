@@ -1,10 +1,7 @@
 # <b> Greenplum performance Analysis </b>
 
 ### A semester project for Analysis and Design of Information Systems course at [ECE](https://www.ece.ntua.gr/en)⚡, [NTUA](https://www.ntua.gr/en)🎓, academic year 2021-2022
-<img alt="Ubuntu Server" src = "https://img.shields.io/badge/Ubuntu Server-E95420?style=for-the-badge&logo=ubuntu&logoColor=white" height="28">
-
-
-<img alt="Greenplum" src = "https://img.shields.io/badge/Greenplum-brightgreen?style=for-the-badge&logo=appveyor&logoColor=white" height="28">
+<img alt="Ubuntu Server" src = "https://img.shields.io/badge/Ubuntu Server-E95420?style=for-the-badge&logo=ubuntu&logoColor=white" height="28"> <img alt="Greenplum" src = "https://img.shields.io/badge/Greenplum-brightgreen?style=for-the-badge&logo=appveyor&logoColor=white" height="28">
 
 
 The purpose of this assignment is to do performance Analysis to the *Greenplum Database*.
